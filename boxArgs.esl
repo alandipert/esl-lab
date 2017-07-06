@@ -1,0 +1,4 @@
+(depends)
+(= (. module exports)
+   (lambda ()
+     (return '((. Array prototype slice call) arguments 0))))

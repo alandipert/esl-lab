@@ -1,0 +1,7 @@
+{
+  "devDependencies": {
+    "eslisp-depends": "file:./eslisp-depends",
+    "eslisp": "^0.7.5",
+    "eslisp-propertify": "^0.3.0"
+  }
+}

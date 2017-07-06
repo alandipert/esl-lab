@@ -1,0 +1,10 @@
+(depends "boxArgs.esl")
+(macro boxArgs (require "./boxArgs.js"))
+
+(function someFn ()
+  (return (boxArgs)))
+
+(console.log "arguments=" (someFn 1 2 3))
+(console.log "wow")
+
+
