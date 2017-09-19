@@ -1,0 +1,1 @@
+main.js: main.esl dotdot.js$(newline)dotdot.js: dotdot.esl

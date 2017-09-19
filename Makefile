@@ -1,12 +1,14 @@
 ESLC       := node_modules/eslisp/bin/eslc
 TRANSFORMS := -t eslisp-depends -t eslisp-propertify
-ESL        := $(shell sbcl --script script/scan.lisp $(CURDIR))
-JS         := $(patsubst %.esl, %.js, $(ESL))
+JS_TARGETS := $(shell sbcl --script script/scan.lisp --targets main.esl)
 
-all: $(JS)
+all: main.js
+
+$(foreach js,$(JS_TARGETS),\
+	$(eval $(shell sbcl --script script/scan.lisp --rule $(js))))
 
 %.js: %.esl
-	$(ESLC) $(TRANSFORMS) $< > $@ || rm -f $@
+	$(ESLC) $(TRANSFORMS) $< > $@ || mv $@ $@.err
 
 clean:
 	rm -f *.js

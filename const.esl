@@ -1,0 +1,11 @@
+(depends)
+(= (. module exports)
+   (lambda (name val)
+     (return (object
+              "type" "VariableDeclaration"
+              "kind" "const"
+              "declarations" (array
+                              (object
+                               "type" "VariableDeclarator"
+                               "id" ((. this compile) name)
+                               "init" ((. this compile) val)))))))

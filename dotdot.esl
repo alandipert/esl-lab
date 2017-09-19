@@ -1,0 +1,30 @@
+((lambda ()
+   (function translate (topic operation)
+     ;; Numbers and strings become array access
+     (if (|| (&& (=== (. operation type) "atom")
+                 (! (isNaN (parseInt (. operation value)))))
+             (=== (. operation type) "string"))
+         (return `(get ,topic ,operation)))
+     ;; Symbols (identifiers) become member expressions
+     (if (=== (. operation type) "atom")
+         (return `(. ,topic ,operation)))
+     ;; (methodName args...) becomes method call
+     (if (&& (=== (. operation type) "list")
+             (=== (. operation values 0 type) "atom"))
+         (block
+             (var method (get operation "values" 0))
+           (var methodArgs ((. (get operation "values") slice) 1))
+           (return
+             `((. ,topic ,method) ,@((. this list apply) null methodArgs)))))
+     ;; Unrecognized operation
+     (throw (new Error (+ "Unrecognized operation: " operation))))
+   (= (. module exports)
+      (lambda ()
+        (var args ((. Array prototype slice call) arguments 0))
+        (switch (. args length)
+                (0 (throw (new Error ".. requires at least one argument")))
+                (1 (return (get args 0))))
+        (return ((. ((. args slice) 1) reduce)
+                 ((. translate bind) this)
+                 (get args 0)))))))
+

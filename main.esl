@@ -1,0 +1,8 @@
+(depends "dotdot.esl")
+(macro .. (require "./dotdot.js"))
+
+(console.log
+ (.. "foobar"
+     (split "")
+     (map (lambda (x) (return (.. x (charCodeAt 0)))))
+     (reduce (lambda (x y) (return (+ x y))))))

@@ -1,0 +1,56 @@
+(depends "boxArgs.esl")
+(macro boxArgs (require "./boxArgs.js"))
+
+((lambda ()
+   (function makeArrayPattern (destFn arrayForm)
+             (return (object
+                      "type" "ArrayPattern"
+                      "elements" ((. (get arrayForm "values") map) destFn))))
+   (function makeObjectPatern (destFn compileFn objectForm)
+             (console.log objectForm)
+             (return (object
+                      "type" "ObjectPattern"
+                      "properties" ((. (get objectForm "values") map)
+                                    (lambda (prop)
+                                      (if (=== prop.type "atom")
+                                          (return
+                                            (object
+                                             "type" "Property"
+                                             "key" ((. this compile) prop)
+                                             "value" ((. this compile) prop)
+                                             "computed" false
+                                             "kind" "init"
+                                             "method" false
+                                             "shorthand" true))))))))
+   (function partial ()
+             (var args (boxArgs))
+             (var f (get args 0))
+             (var preArgs ((. args slice) 1))
+             (return (lambda ()
+                       (return
+                         ((. f apply) f ((. preArgs concat) (boxArgs)))))))
+   (function destructure (compileFn pattern)
+             (if (=== pattern.type "atom")
+                 (return (compileFn pattern)))
+             (if (=== pattern.type "list")
+                 (switch (get pattern.values 0 "value")
+                         ("array" (return (makeArrayPattern
+                                           (partial destructure compileFn)
+                                           pattern)))
+                         ("object" (return (makeObjectPattern
+                                            (partial destructure compileFn)
+                                            compileFn
+                                            pattern)))
+                         (default (console.log kind)))))
+   (= (. module exports)
+      (lambda (name val)
+        (destructure (. this compile) name)
+        (return (object
+                 "type" "VariableDeclaration"
+                 "kind" "let"
+                 "declarations" (array
+                                 (object
+                                  "type" "VariableDeclarator"
+                                  "id" ((. this compile) name)
+                                  "init" ((. this compile) val)))))))))
+

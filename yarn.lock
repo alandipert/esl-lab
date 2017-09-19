@@ -70,9 +70,9 @@ eslisp-propertify@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/eslisp-propertify/-/eslisp-propertify-0.3.0.tgz#85d214574a03137f045b8b88eb7237a69dd44f2c"
 
-eslisp@^0.7.5:
-  version "0.7.5"
-  resolved "https://registry.yarnpkg.com/eslisp/-/eslisp-0.7.5.tgz#c16cc028229880756da8b3c9270b188065f23bea"
+eslisp@^0.7.6:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/eslisp/-/eslisp-0.7.6.tgz#dab1792c9c86d0e3eab2040469341d9954af391a"
   dependencies:
     chalk "^1.1.1"
     concat-stream "^1.4.7"
