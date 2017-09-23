@@ -15,3 +15,5 @@ clean:
 
 print-%:
 	@echo '$*=$($*)'
+
+.PHONY: clean .print-%

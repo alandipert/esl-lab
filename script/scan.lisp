@@ -1,4 +1,4 @@
-#!/usr/bin/env sbcl --script
+;; Run using sbcl --script scan.lisp
 
 (defun add-ext (filename ext)
   "Appends the specified extension after removing the original."
@@ -36,5 +36,6 @@ file targets they represent."
           (mapcar (lambda (f) (add-ext f "js"))
                   (get-depends (add-ext js-file "esl")))))
 
-(destructuring-bind (op &rest args) (cdr sb-ext:*posix-argv*)
-  (apply (find-symbol (string-upcase op)) args))
+(if (> (length sb-ext:*posix-argv*) 1)
+  (destructuring-bind (op &rest args) (cdr sb-ext:*posix-argv*)
+    (apply (find-symbol (string-upcase op)) args)))
